@@ -25,7 +25,6 @@
             --white: #FFFFFF;
             --shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
             --success: #27ae60;
-            --warning: #e74c3c;
         }
 
         body {
@@ -366,6 +365,30 @@
             background-color: var(--success);
         }
 
+        /* Loading Spinner */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            grid-column: 1 / -1;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         /* Cart Sidebar */
         .cart-sidebar {
             position: fixed;
@@ -516,157 +539,6 @@
             color: var(--medium-gray);
         }
 
-        /* Checkout Modal */
-        .checkout-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .checkout-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .checkout-form {
-            background-color: var(--white);
-            border-radius: 12px;
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: var(--shadow);
-        }
-
-        .checkout-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .checkout-header h2 {
-            font-size: 24px;
-            color: var(--secondary);
-        }
-
-        .close-checkout {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--dark-gray);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--secondary);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--medium-gray);
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.2s ease;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .checkout-summary {
-            background-color: var(--light-gray);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .checkout-summary h3 {
-            margin-bottom: 10px;
-            color: var(--secondary);
-        }
-
-        .checkout-summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-        }
-
-        .checkout-summary-total {
-            display: flex;
-            justify-content: space-between;
-            font-weight: 600;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid var(--medium-gray);
-        }
-
-        .submit-checkout {
-            background-color: var(--success);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            width: 100%;
-            font-size: 16px;
-        }
-
-        .submit-checkout:hover {
-            background-color: #219653;
-        }
-
-        .submit-checkout:disabled {
-            background-color: var(--dark-gray);
-            cursor: not-allowed;
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 500;
-            z-index: 3000;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s ease;
-        }
-
-        .notification.success {
-            background-color: var(--success);
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .notification.error {
-            background-color: var(--warning);
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         /* Overlay */
         .overlay {
             position: fixed;
@@ -775,10 +647,6 @@
                 font-size: 12px;
                 padding: 6px 10px;
             }
-
-            .checkout-form {
-                padding: 20px;
-            }
         }
     </style>
 </head>
@@ -796,7 +664,7 @@
                     <input type="text" id="search-input" placeholder="Search for products...">
                 </div>
                 <div class="user-actions">
-                    <a href="https://shsss-org.github.io/Revoc_upload/" class="host-btn">Become a Host</a>
+                    <a href="#" class="host-btn">Become a Host</a>
                     <a href="#" id="cart-toggle" class="cart-icon">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-count">0</span>
@@ -869,13 +737,17 @@
         <!-- Featured Products -->
         <h2 class="section-title">Featured Products</h2>
         <div class="products-grid" id="products-container">
-            <!-- Products will be loaded here from JSON -->
+            <div class="loading">
+                <div class="spinner"></div>
+            </div>
         </div>
 
         <!-- Popular Products -->
         <h2 class="section-title">Popular in Your Area</h2>
         <div class="products-grid" id="popular-products">
-            <!-- Popular products will be loaded here from JSON -->
+            <div class="loading">
+                <div class="spinner"></div>
+            </div>
         </div>
     </main>
 
@@ -895,47 +767,9 @@
                 <span>Total:</span>
                 <span id="cart-total">$0.00</span>
             </div>
-            <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+            <button class="checkout-btn">Proceed to Checkout</button>
         </div>
     </div>
-
-    <!-- Checkout Modal -->
-    <div class="checkout-modal" id="checkout-modal">
-        <div class="checkout-form">
-            <div class="checkout-header">
-                <h2>Complete Your Order</h2>
-                <button class="close-checkout" id="close-checkout">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form id="customer-form">
-                <div class="form-group">
-                    <label for="customer-name">Full Name</label>
-                    <input type="text" id="customer-name" name="name" required placeholder="Enter your full name">
-                </div>
-                <div class="form-group">
-                    <label for="customer-phone">Phone Number</label>
-                    <input type="tel" id="customer-phone" name="phone" required placeholder="Enter your phone number">
-                </div>
-                <div class="checkout-summary">
-                    <h3>Order Summary</h3>
-                    <div id="checkout-items">
-                        <!-- Checkout items will be loaded here -->
-                    </div>
-                    <div class="checkout-summary-total">
-                        <span>Total:</span>
-                        <span id="checkout-total">$0.00</span>
-                    </div>
-                </div>
-                <button type="submit" class="submit-checkout" id="submit-checkout">
-                    <i class="fas fa-paper-plane"></i> Place Order
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Notification -->
-    <div class="notification" id="notification"></div>
 
     <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
@@ -982,117 +816,14 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 REVOC Marketplace. All rights reserved.</p>
-                <p>&copy; 2025 SHSSS Marketplace. All rights reserved.</p>
-                <p>&copy; 2025 flovvnetic. All rights reserved.</p>
+                <p>&copy; 2023 REVOC Marketplace. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Sample product data (in a real scenario, this would be loaded from product.json)
-        const products = [
-            {
-                id: 1,
-                title: "Comfort Memory Foam Pillow",
-                description: "Ergonomic pillow designed for optimal neck support and comfortable sleep.",
-                price: 2999.99,
-                image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.8,
-                category: "bedding",
-                keywords: ["pillow", "memory foam", "bedding", "sleep", "comfort"]
-            },
-            {
-                id: 2,
-                title: "Stainless Steel Cookware Set",
-                description: "10-piece kitchen cookware set with non-stick coating and durable handles.",
-                price: 899.99,
-                image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.6,
-                category: "kitchen",
-                keywords: ["cookware", "kitchen", "stainless steel", "pots", "pans"]
-            },
-            {
-                id: 3,
-                title: "Modern Study Desk",
-                description: "Compact desk with storage drawer, perfect for small spaces.",
-                price: 3029.99,
-                image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.9,
-                category: "furniture",
-                keywords: ["desk", "study", "furniture", "wood", "office"]
-            },
-            {
-                id: 4,
-                title: "Bathroom Essentials Set",
-                description: "Complete set including towels, shower curtain, and bath mat.",
-                price: 450.99,
-                image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.5,
-                category: "bathroom",
-                keywords: ["bathroom", "towels", "shower curtain", "bath mat", "essentials"]
-            },
-            {
-                id: 5,
-                title: "LED Desk Lamp",
-                description: "Adjustable lamp with multiple brightness settings and USB port.",
-                price: 249.99,
-                image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.7,
-                category: "lighting",
-                keywords: ["lamp", "LED", "desk", "lighting", "USB"]
-            },
-            {
-                id: 6,
-                title: "Tool Kit for Home Repairs",
-                description: "36-piece tool set with case, perfect for basic home maintenance.",
-                price: 390.99,
-                image: "https://images.unsplash.com/photo-1572981779307-38f8b0456224?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.4,
-                category: "tools",
-                keywords: ["tools", "repair", "home", "maintenance", "kit"]
-            },
-            {
-                id: 7,
-                title: "Wall Art Set",
-                description: "Set of 3 canvas prints to brighten up your living space.",
-                price: 3466.99,
-                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.3,
-                category: "decor",
-                keywords: ["art", "wall", "decor", "canvas", "prints"]
-            },
-            {
-                id: 8,
-                title: "Smart Plug Set",
-                description: "Control your appliances remotely with these Wi-Fi enabled smart plugs.",
-                price: 199.99,
-                image: "https://images.unsplash.com/photo-1558618666-fcd25856cd25?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.6,
-                category: "electronics",
-                keywords: ["smart plug", "electronics", "Wi-Fi", "remote control", "appliances"]
-            },
-            {
-                id: 9,
-                title: "Storage Bins Set",
-                description: "Set of 5 clear plastic storage bins with secure lids.",
-                price: 327.99,
-                image: "https://images.unsplash.com/photo-1586525198428-225f6f12cff5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.5,
-                category: "storage",
-                keywords: ["storage", "bins", "plastic", "organization", "containers"]
-            },
-            {
-                id: 10,
-                title: "Vacuum Cleaner",
-                description: "Lightweight vacuum with HEPA filter for efficient cleaning.",
-                price: 790.99,
-                image: "https://images.unsplash.com/photo-1558618047-76b6caf8ae36?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.7,
-                category: "cleaning",
-                keywords: ["vacuum", "cleaner", "cleaning", "HEPA", "lightweight"]
-            }
-        ];
+        // Product data will be loaded from JSON file
+        let products = [];
 
         // Cart state
         let cart = [];
@@ -1111,21 +842,37 @@
         const closeCart = document.getElementById('close-cart');
         const searchInput = document.getElementById('search-input');
         const categories = document.querySelectorAll('.category');
-        const checkoutBtn = document.getElementById('checkout-btn');
-        const checkoutModal = document.getElementById('checkout-modal');
-        const closeCheckout = document.getElementById('close-checkout');
-        const customerForm = document.getElementById('customer-form');
-        const checkoutItems = document.getElementById('checkout-items');
-        const checkoutTotal = document.getElementById('checkout-total');
-        const submitCheckout = document.getElementById('submit-checkout');
-        const notification = document.getElementById('notification');
 
-        // Telegram Bot Configuration
-        const TELEGRAM_BOT_TOKEN = '8317686496:AAEh2u8duL2c9XJKNS7Owl5GJ1bGAU73tkQ'; // Replace with your bot token
-        const TELEGRAM_CHAT_IDS = [
-            '7789224631', // Replace with your first chat ID
-            // Replace with your second chat ID
-        ];
+        // Function to load products from JSON file
+        async function loadProductsFromJSON() {
+            try {
+                // Show loading state
+                productsContainer.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                popularProductsContainer.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                
+                // Fetch products from JSON file
+                const response = await fetch('products.json');
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to load products: ${response.status}`);
+                }
+                
+                products = await response.json();
+                loadProducts(); // Load the products into the UI
+            } catch (error) {
+                console.error('Error loading products:', error);
+                // Show error message
+                productsContainer.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #ddd; margin-bottom: 15px;"></i>
+                        <h3>Failed to load products</h3>
+                        <p>Please check your internet connection and try again.</p>
+                        <button onclick="loadProductsFromJSON()" style="margin-top: 15px; padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer;">Retry</button>
+                    </div>
+                `;
+                popularProductsContainer.innerHTML = '';
+            }
+        }
 
         // Function to create product card HTML
         function createProductCard(product) {
@@ -1261,7 +1008,6 @@
                         <p>Add some products to get started</p>
                     </div>
                 `;
-                checkoutBtn.disabled = true;
             } else {
                 cart.forEach(item => {
                     cartItemsContainer.innerHTML += `
@@ -1282,7 +1028,6 @@
                         </div>
                     `;
                 });
-                checkoutBtn.disabled = false;
             }
             
             // Update cart total
@@ -1290,79 +1035,10 @@
             cartTotalElement.textContent = `$${total.toFixed(2)}`;
         }
 
-        // Function to update checkout summary
-        function updateCheckoutSummary() {
-            checkoutItems.innerHTML = '';
-            
-            cart.forEach(item => {
-                checkoutItems.innerHTML += `
-                    <div class="checkout-summary-item">
-                        <span>${item.title} (x${item.quantity})</span>
-                        <span>$${(item.price * item.quantity).toFixed(2)}</span>
-                    </div>
-                `;
-            });
-            
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            checkoutTotal.textContent = `$${total.toFixed(2)}`;
-        }
-
-        // Function to show notification
-        function showNotification(message, type = 'success') {
-            notification.textContent = message;
-            notification.className = `notification ${type}`;
-            
-            setTimeout(() => {
-                notification.className = 'notification';
-            }, 3000);
-        }
-
-        // Function to send order to Telegram
-        async function sendOrderToTelegram(customerName, customerPhone) {
-            // Format the order message
-            let message = `🛒 *NEW ORDER FROM REVOC MARKETPLACE* 🛒\n\n`;
-            message += `*Customer Details:*\n`;
-            message += `Name: ${customerName}\n`;
-            message += `Phone: ${customerPhone}\n\n`;
-            message += `*Order Items:*\n`;
-            
-            cart.forEach(item => {
-                message += `- ${item.title} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`;
-            });
-            
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            message += `\n*Total: $${total.toFixed(2)}*\n\n`;
-            message += `_Order placed at: ${new Date().toLocaleString()}_`;
-            
-            // Send to all specified chat IDs
-            const sendPromises = TELEGRAM_CHAT_IDS.map(chatId => {
-                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-                
-                return fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
-                });
-            });
-            
-            try {
-                await Promise.all(sendPromises);
-                return true;
-            } catch (error) {
-                console.error('Error sending message to Telegram:', error);
-                return false;
-            }
-        }
-
         // Initialize the page when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            loadProducts();
+            // Load products from JSON file
+            loadProductsFromJSON();
             updateCart();
             
             // Category selection
@@ -1403,68 +1079,13 @@
                 searchQuery = this.value;
                 loadProducts();
             });
-            
-            // Checkout button click
-            checkoutBtn.addEventListener('click', function() {
-                if (cart.length === 0) {
-                    showNotification('Your cart is empty!', 'error');
-                    return;
-                }
-                
-                updateCheckoutSummary();
-                checkoutModal.classList.add('active');
-                overlay.classList.add('active');
-            });
-            
-            // Close checkout modal
-            closeCheckout.addEventListener('click', function() {
-                checkoutModal.classList.remove('active');
-                overlay.classList.remove('active');
-            });
-            
-            // Form submission
-            customerForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const customerName = document.getElementById('customer-name').value;
-                const customerPhone = document.getElementById('customer-phone').value;
-                
-                if (!customerName || !customerPhone) {
-                    showNotification('Please fill in all fields!', 'error');
-                    return;
-                }
-                
-                // Disable submit button and show loading state
-                submitCheckout.disabled = true;
-                submitCheckout.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-                
-                // Send order to Telegram
-                const success = await sendOrderToTelegram(customerName, customerPhone);
-                
-                if (success) {
-                    showNotification('Order placed successfully! We will contact you soon.');
-                    
-                    // Clear cart and close modals
-                    cart = [];
-                    updateCart();
-                    checkoutModal.classList.remove('active');
-                    cartSidebar.classList.remove('active');
-                    overlay.classList.remove('active');
-                    customerForm.reset();
-                } else {
-                    showNotification('Failed to place order. Please try again.', 'error');
-                }
-                
-                // Re-enable submit button
-                submitCheckout.disabled = false;
-                submitCheckout.innerHTML = '<i class="fas fa-paper-plane"></i> Place Order';
-            });
         });
 
         // Make functions available globally for onclick handlers
         window.addToCart = addToCart;
         window.removeFromCart = removeFromCart;
         window.updateQuantity = updateQuantity;
+        window.loadProductsFromJSON = loadProductsFromJSON;
     </script>
 </body>
 </html>
