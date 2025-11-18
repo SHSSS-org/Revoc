@@ -1,1 +1,22 @@
-
+   {
+           {
+                id: 18,
+                title: "Cow",
+                description: "Ergonomic pillow designed for optimal neck support and comfortable sleep.",
+                price: 2999.99,
+                image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                rating: 4.8,
+                category: "bedding",
+                keywords: ["pillow", "memory foam", "bedding", "sleep", "comfort"]
+            },
+            {
+                id: 19,
+                title: "S Set",
+                description: "10-piece kitchen cookware set with non-stick coating and durable handles.",
+                price: 899.99,
+                image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                rating: 4.6,
+                category: "kitchen",
+                keywords: ["cookware", "kitchen", "stainless steel", "pots", "pans"]
+            },
+}
