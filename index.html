@@ -991,108 +991,27 @@
 
     <script>
         // Sample product data (in a real scenario, this would be loaded from product.json)
-        const products = [
-            {
-                id: 1,
-                title: "Comfort Memory Foam Pillow",
-                description: "Ergonomic pillow designed for optimal neck support and comfortable sleep.",
-                price: 2999.99,
-                image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.8,
-                category: "bedding",
-                keywords: ["pillow", "memory foam", "bedding", "sleep", "comfort"]
-            },
-            {
-                id: 2,
-                title: "Stainless Steel Cookware Set",
-                description: "10-piece kitchen cookware set with non-stick coating and durable handles.",
-                price: 899.99,
-                image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.6,
-                category: "kitchen",
-                keywords: ["cookware", "kitchen", "stainless steel", "pots", "pans"]
-            },
-            {
-                id: 3,
-                title: "Modern Study Desk",
-                description: "Compact desk with storage drawer, perfect for small spaces.",
-                price: 3029.99,
-                image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.9,
-                category: "furniture",
-                keywords: ["desk", "study", "furniture", "wood", "office"]
-            },
-            {
-                id: 4,
-                title: "Bathroom Essentials Set",
-                description: "Complete set including towels, shower curtain, and bath mat.",
-                price: 450.99,
-                image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.5,
-                category: "bathroom",
-                keywords: ["bathroom", "towels", "shower curtain", "bath mat", "essentials"]
-            },
-            {
-                id: 5,
-                title: "LED Desk Lamp",
-                description: "Adjustable lamp with multiple brightness settings and USB port.",
-                price: 249.99,
-                image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.7,
-                category: "lighting",
-                keywords: ["lamp", "LED", "desk", "lighting", "USB"]
-            },
-            {
-                id: 6,
-                title: "Tool Kit for Home Repairs",
-                description: "36-piece tool set with case, perfect for basic home maintenance.",
-                price: 390.99,
-                image: "https://images.unsplash.com/photo-1572981779307-38f8b0456224?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.4,
-                category: "tools",
-                keywords: ["tools", "repair", "home", "maintenance", "kit"]
-            },
-            {
-                id: 7,
-                title: "Wall Art Set",
-                description: "Set of 3 canvas prints to brighten up your living space.",
-                price: 3466.99,
-                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.3,
-                category: "decor",
-                keywords: ["art", "wall", "decor", "canvas", "prints"]
-            },
-            {
-                id: 8,
-                title: "Smart Plug Set",
-                description: "Control your appliances remotely with these Wi-Fi enabled smart plugs.",
-                price: 199.99,
-                image: "https://images.unsplash.com/photo-1558618666-fcd25856cd25?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.6,
-                category: "electronics",
-                keywords: ["smart plug", "electronics", "Wi-Fi", "remote control", "appliances"]
-            },
-            {
-                id: 9,
-                title: "Storage Bins Set",
-                description: "Set of 5 clear plastic storage bins with secure lids.",
-                price: 327.99,
-                image: "https://images.unsplash.com/photo-1586525198428-225f6f12cff5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.5,
-                category: "storage",
-                keywords: ["storage", "bins", "plastic", "organization", "containers"]
-            },
-            {
-                id: 10,
-                title: "Vacuum Cleaner",
-                description: "Lightweight vacuum with HEPA filter for efficient cleaning.",
-                price: 790.99,
-                image: "https://images.unsplash.com/photo-1558618047-76b6caf8ae36?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-                rating: 4.7,
-                category: "cleaning",
-                keywords: ["vacuum", "cleaner", "cleaning", "HEPA", "lightweight"]
-            }
-        ];
+        // Replace the hardcoded products array with:
+let products = [];
+
+// Function to load products from JSON file
+async function loadProductsFromJSON() {
+    try {
+        const response = await fetch('product.json');
+        products = await response.json();
+        loadProducts(); // Load the products into the UI
+    } catch (error) {
+        console.error('Error loading products:', error);
+        // Fallback to sample data or show error message
+    }
+}
+
+// Then call this function instead of loading hardcoded data
+document.addEventListener('DOMContentLoaded', function() {
+    loadProductsFromJSON(); // Instead of loadProducts();
+    updateCart();
+    // ... rest of your initialization code
+});
 
         // Cart state
         let cart = [];
